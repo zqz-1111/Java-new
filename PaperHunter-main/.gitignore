@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Local runtime data
+.cache/
+downloaded_papers/
+*.pdf
+*.tmp
+
+# Local machine / assistant files
+path.txt
+.env
+.env.*
+.tools/
+.claude/
+.agents/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Logs
+*.log
