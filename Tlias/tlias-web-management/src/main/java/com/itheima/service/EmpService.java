@@ -4,6 +4,8 @@ import com.itheima.pojo.Emp;
 import com.itheima.pojo.EmpQueryParam;
 import com.itheima.pojo.PageResult;
 
+import java.util.List;
+
 public interface EmpService {
 
 
@@ -12,5 +14,7 @@ public interface EmpService {
 
     PageResult<Emp> page(EmpQueryParam empQueryParam);
 
-    void save(Emp emp);
+    void save(Emp emp) throws Exception;
+
+    void delete(List<Integer> ids);
 }

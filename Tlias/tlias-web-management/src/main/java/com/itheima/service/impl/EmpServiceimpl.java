@@ -4,10 +4,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.itheima.mapper.EmpExprMapper;
 import com.itheima.mapper.EmpMapper;
-import com.itheima.pojo.Emp;
-import com.itheima.pojo.EmpExpr;
-import com.itheima.pojo.EmpQueryParam;
-import com.itheima.pojo.PageResult;
+import com.itheima.pojo.*;
+import com.itheima.service.EmpLogService;
 import com.itheima.service.EmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,9 @@ public class EmpServiceimpl implements EmpService {
 
     @Autowired
     private EmpExprMapper empExprMapper;
+
+    @Autowired
+    private EmpLogService empLogService;
 
 //    @Override
 //    public PageResult<Emp> page(Integer page, Integer pageSize) {
@@ -60,17 +61,38 @@ public class EmpServiceimpl implements EmpService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void save(Emp emp) {
-        //1.保存员工基本信息
-        emp.setCreateTime(LocalDateTime.now());
-        emp.setUpdateTime(LocalDateTime.now());
-        empMapper.insert(emp);
-        //2.保存员工工作经历信息(如果不用保存工作经历信息,就只需要上面)
-        List<EmpExpr> exprList = emp.getExprList();
-        if (!CollectionUtils.isEmpty(exprList)) {
-            exprList.forEach(empExpr -> empExpr.setEmpId(emp.getId()));
-            empExprMapper.insertBatch(exprList);
+    public void save(Emp emp) throws Exception {
+        try {
+            //1. 保存员工基本信息
+            emp.setCreateTime(LocalDateTime.now());
+            emp.setUpdateTime(LocalDateTime.now());
+            empMapper.insert(emp);
+
+            //2. 保存员工工作经历信息
+            List<EmpExpr> exprList = emp.getExprList();
+            if(!CollectionUtils.isEmpty(exprList)){
+                //遍历集合，为empId赋值
+                exprList.forEach(empExpr -> {
+                    empExpr.setEmpId(emp.getId());
+                });
+                empExprMapper.insertBatch(exprList);
+            }
+        } finally {
+            //记录操作日志
+            EmpLog empLog = new EmpLog(null, LocalDateTime.now(), "新增员工:" + emp);
+            empLogService.insertLog(empLog);
         }
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void delete(List<Integer> ids) {
+        //1. 批量删除员工基本信息
+        empMapper.deleteByIds(ids);
+
+        //2. 批量删除员工的工作经历信息
+        empExprMapper.deleteByEmpIds(ids);
+    }
+
 
 }

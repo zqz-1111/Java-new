@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Slf4j
 @RequestMapping("/emps")
@@ -30,11 +32,19 @@ public class EmpController {
     }
 
     @PostMapping
-    public Result save(@RequestBody Emp emp) {
+    public Result save(@RequestBody Emp emp) throws Exception {
         log.info("新增员工:{}", emp);
         empService.save(emp);
         return Result.success();
     }
+
+    @DeleteMapping
+    public Result delete(@RequestParam List<Integer> ids) {
+        log.info("删除员工的id:{}", ids);
+        empService.delete(ids);
+        return Result.success();
+    }
+
 
 
 }
