@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.EmpExprMapper">
+    <insert id="insertBatch">
+--         # 第一个参数:集合名,第二个变量名,第三个逗号分隔
+        insert into emp_expr(emp_id, begin, end, company, job) values
+--         # 批量插入员工工作经历数据
+        <foreach collection="exprList" item="expr" separator=",">
+            (#{expr.empId}, #{expr.begin}, #{expr.end}, #{expr.company}, #{expr.job})
+        </foreach>
+    </insert>
+
+</mapper>
