@@ -41,7 +41,7 @@ public class DeptController {
         return Result.success();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public Result search(@PathVariable Integer id){
         log.info("查询单个部门信息{}",id);
         Dept dept=deptService.search(id);

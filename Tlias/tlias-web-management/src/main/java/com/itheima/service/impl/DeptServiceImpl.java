@@ -19,7 +19,7 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public List<Dept> findAll() {
-        return deptMapper.finAll();
+        return deptMapper.findAll();
     }
 
     //实现类

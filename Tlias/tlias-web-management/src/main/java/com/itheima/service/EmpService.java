@@ -17,4 +17,10 @@ public interface EmpService {
     void save(Emp emp) throws Exception;
 
     void delete(List<Integer> ids);
+
+    Emp getbyid(Integer id);
+
+    void update(Emp emp);
+
+    List<Emp> findAll();
 }

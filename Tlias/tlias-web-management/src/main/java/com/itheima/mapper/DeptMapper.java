@@ -9,7 +9,7 @@ import java.util.List;
 public interface DeptMapper {
     //SQL语句,查询表 内容
     @Select("select id, name, create_time, update_time from dept order by update_time desc ")
-    List<Dept> finAll();
+    List<Dept> findAll();
 
 
     @Delete("delete from dept where id=#{id}")
