@@ -100,4 +100,33 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> result = page.getResult();
         return new PageResult(total,result);
     }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        //update employee set status = ? where id = ?
+       /* Employee employee = new Employee();
+        employee.setStatus(status);
+        employee.setId(id); */
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+        employeeMapper.update(employee);
+    }
+
+    @Override
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        employee.setPassword("****");
+        return employee;
+    }
+
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee); //属性拷贝
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee); //需要传入Employee参数
+    }
 }
